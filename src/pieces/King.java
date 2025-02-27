@@ -6,9 +6,9 @@ package pieces;
 import chess.Chess;
 
 /**
- * The King class extends Piece to create an instance of the King Piece. 
- * @author Deep Kotadia
- * @author Chinmoyi Bhushan
+ * The King class is used to implement the King piece in the game of chess.
+ * @author Aarav Makadia
+ * @author Kuber Kupuriya
  *
  */
 public class King extends Piece{

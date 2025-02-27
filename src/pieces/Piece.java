@@ -4,9 +4,9 @@
 package pieces;
 
 /**
- * Piece is the abstract class for the Chess game, in general it specifies the Piece object and the functionality of that Piece object. 
- * @author Deep Kotadia
- * @author Chinmoyi Bhushan
+ * The Piece class is used to implement the Piece in the game of chess. It is extended by the other pieces in the game.
+ * @author Aarav Makadia
+ * @author Kuber Kupuriya
  *
  */
 public abstract class Piece {

@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The Bishop class is an extension of the Piece class and creates a Bishop Piece.
- * @author Deep Kotadia
- * @author Chinmoyi Bhushan
+ * The Bishop class is used to implement the Bishop piece in the game of chess.
+ * @author Aarav Makadia
+ * @author Kuber Kupuriya
  *
  */
 public class Bishop extends Piece{

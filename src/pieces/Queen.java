@@ -9,9 +9,9 @@ import java.util.List;
 import chess.Chess;
 
 /**
- * The Queen Class extends Piece to create a Queen piece. 
- * @author Deep Kotadia
- * @author Chinmoyi Bhushan
+ * The Queen class is used to implement the Queen piece in the game of chess.
+ * @author Aarav Makadia
+ * @author Kuber Kupuriya
  *
  */
 public class Queen extends Piece {

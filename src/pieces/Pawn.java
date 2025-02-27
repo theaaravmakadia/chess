@@ -6,9 +6,9 @@ package pieces;
 import chess.Chess;
 
 /**
- * This is the Pawn Class which extends Piece and creates a Pawn Piece for the game. 
- * @author Deep Kotadia
- * @author Chinmoyi Bhushan
+ * The Pawn class is used to implement the Pawn piece in the game of chess.
+ * @author Aarav Makadia
+ * @author Kuber Kupuriya
  *
  */
 public class Pawn extends Piece {

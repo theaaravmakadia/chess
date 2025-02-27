@@ -4,12 +4,11 @@
 package pieces;
 
 /**
- * The Rook class is an extension of the Piece class and creates a Rook Piece.
- * @author Deep Kotadia
- * @author Chinmoyi Bhushan
+ * The Rook class is used to implement the Rook piece in the game of chess.
+ * @author Aarav Makadia
+ * @author Kuber Kupuriya
  *
  */
-
 import chess.Chess;
 
 public class Rook extends Piece {

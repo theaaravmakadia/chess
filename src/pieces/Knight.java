@@ -7,9 +7,9 @@ import chess.Chess;
 import java.util.*;
 
 /**
- * The Knight class is an extension of the Piece class and creates a Knight Piece.
- * @author Deep Kotadia
- * @author Chinmoyi Bhushan
+ * The Knight class is used to implement the Knight piece in the game of chess.
+ * @author Aarav Makadia
+ * @author Kuber Kupuriya
  *
  */
 public class Knight extends Piece {

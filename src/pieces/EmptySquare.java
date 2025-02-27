@@ -1,13 +1,11 @@
 package pieces;
 
 /**
- * The EmptySquare class is an extension of the Piece class and is used to create EmptySquares for the board.
- * 
- * @author Deep Kotadia
- * @author Chinmoyi Bhushan
+ * The EmptySquare class is used to implement the EmptySquare piece in the game of chess.
+ * @author Aarav Makadia
+ * @author Kuber Kupuriya
  *
  */
-
 public class EmptySquare extends Piece {
 
 	public EmptySquare(String value) {
