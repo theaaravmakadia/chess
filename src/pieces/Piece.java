@@ -1,96 +1,94 @@
-/**
- * 
- */
 package pieces;
 
 /**
- * The Piece class is used to implement the Piece in the game of chess. It is extended by the other pieces in the game.
+ * The Piece class is used to implement the Piece in the game of chess.
+ * It is extended by the other pieces in the game.
+ * 
  * @author Aarav Makadia
  * @author Kuber Kupuriya
- *
  */
 public abstract class Piece {
-	
-	String value;
-	boolean hasMoved;
-	
-	/**
-	 * defined constructor for Piece class.
-	 * @param value     value of the Piece
-	 *
-	 */
-	
-	public Piece(String value) {
-		this.value = value;
-		hasMoved = false;
-	}
-	
-	/**
-	 * getValue gets the value of the piece
-	 * @return the value of the piece.
-	 *
-	 */
-	
-	public String getvalue() {
-		return this.value;
-	}
-	
-	/**
-	 * hasMoved is a function to check if the Piece has moved or not
-	 * @return true or false depending upon if the piece has moved
-	 *
-	 */
-	
-	public boolean hasMoved() {
-		return this.hasMoved;
-	}
-	
-	/**
-	 * sethasMoved is a function that acts as a flag for if the piece has moved.
-	 * @param hasMoved it is a boolean that is passed in to see if the piece has moved.
-	 *
-	 */
-	public void sethasMoved(boolean hasMoved) {
-		this.hasMoved = hasMoved;
-	}
-	
-	/**
-	 * move function to move the Piece from one pos to another, it is overriden by subclasses to implement their own moves. 
-	 * @param oldPos  old position
-	 * @param newPos  new position
-	 * @param promopiece  required in Pawn's case. 
-	 *
-	 */
-	public void move(String oldPos, String newPos, char promopiece) {
-		return;
-	}
-	
-	/**
-	 * isMoveValid function to check if the Piece can move from one pos to another, it is extended to the subclasses to check for the valid move of that particular Piece.
-	 * @param oldPos old position
-	 * @param newPos new position
-	 * 
-	 * @return true if valid and false otherwise.
-	 *
-	 */
-	
-	public boolean isMoveValid(String oldPos, String newPos) {
-		return true;
-	}
-	
-	/**
-	 * isPathEmpty function to check if the path b/w the src and dest is empty, it is extended by the subclasses to check their own paths.
-	 * @param oldPos  old position
-	 * @param newPos  new position
-	 * 
-	 * @return true if path empty and false otherwise
-	 *
-	 */	
-	
-	public boolean isPathEmpty(String oldPos, String newPos) {
-		return true;
-	}
-	
-
-
+    
+    String value;
+    boolean hasMoved;
+    
+    //Kuber
+    /**
+     * Checks if the path between the source and destination is empty.
+     * Subclasses override this method to provide their specific path checking.
+     * 
+     * @param o the source position in algebraic notation
+     * @param n the destination position in algebraic notation
+     * @return true if the path is empty; false otherwise
+     */
+    public boolean isPathEmpty(String o, String n) {
+        return true;
+    }
+    
+    //Aarav
+    /**
+     * Determines if the piece can move from the source position to the destination position.
+     * Subclasses override this method with specific movement rules.
+     * 
+     * @param o the source position in algebraic notation
+     * @param n the destination position in algebraic notation
+     * @return true if the move is valid; false otherwise
+     */
+    public boolean isMoveValid(String o, String n) {
+        return true;
+    }
+    
+    //Kuber
+    /**
+     * Moves the piece from the source position to the destination position.
+     * This method is overridden by subclasses to implement specific movement behavior.
+     * 
+     * @param o the source position in algebraic notation
+     * @param n the destination position in algebraic notation
+     * @param p an optional promotion character (used by Pawn)
+     */
+    public void move(String o, String n, char p) {
+        return;
+    }
+    
+    //Aarav
+    /**
+     * Checks if the piece has moved.
+     * 
+     * @return true if the piece has moved; false otherwise
+     */
+    public boolean hasMoved() {
+        return this.hasMoved;
+    }
+    
+    //Kuber
+    /**
+     * Sets the moved flag for the piece.
+     * 
+     * @param h a boolean indicating whether the piece has moved
+     */
+    public void sethasMoved(boolean h) {
+        this.hasMoved = h;
+    }
+    
+    //Aarav
+    /**
+     * Retrieves the value of the piece.
+     * 
+     * @return the value of the piece as a String
+     */
+    public String getvalue() {
+        return this.value;
+    }
+    
+    //Kuber
+    /**
+     * Constructs a new Piece with the specified value.
+     * 
+     * @param v the value of the piece
+     */
+    public Piece(String v) {
+        this.value = v;
+        hasMoved = false;
+    }
 }

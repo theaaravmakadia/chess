@@ -1,114 +1,101 @@
-/**
- * 
- */
 package pieces;
 
 import chess.Chess;
+import java.lang.Math;
 
 /**
  * The King class is used to implement the King piece in the game of chess.
+ * It provides move validation and execution methods specific to the King.
+ * 
  * @author Aarav Makadia
  * @author Kuber Kupuriya
- *
  */
-public class King extends Piece{
+public class King extends Piece {
 
-	public King(String value) {
-		super(value);
-	}
-
-	/** isMoveValid takes in the src, destination of the piece's move and returns true if it is a valid move for King.
-	 * @param oldPos is the position the piece is trying to move from
-	 * @param newPos is the position the piece is trying to move to
-	 * 
-	 * @return true if the move is valid and false otherwise.
-	 * 
-	 */
-
-	public boolean isMoveValid(String oldPos, String newPos) {
-		
-		/*to check if newPos is a box in the bounds of the board*/
-		if(Chess.board.containsKey(newPos) == false) {
-			return false;
-		}
-		
-		String piece_oldPos = Chess.board.get(oldPos).getvalue();
-		String piece_newPos = Chess.board.get(newPos).getvalue();
-
-		
-		/*to check if Valid move for king*/
-		
-		int x= Math.abs((oldPos.charAt(0))- (newPos.charAt(0)));
-		int y= Math.abs( (oldPos.charAt(1)) - (newPos.charAt(1)) );
-		
-		if( (x==0 && y==1) || (x==1 && y==0) || (x==y && x==1 && y==1)) {
-			
-			//to check if the newpos is empty
-			if(Chess.board.get(newPos).getvalue().equals("  ") || Chess.board.get(newPos).getvalue().equals("##")) {
-				/*if(!(isCheck(newPos))) {
-					return true;
-					
-				}
-				
-				else {
-					//need to prompt user to try a different valid move. 
-					return false;
-				}*/
-				return true;
-				
-			}
-			
-			/*if new pos is not empty */
-			else {
-				
-				if(piece_oldPos.charAt(0)==piece_newPos.charAt(0)) {
-					return false;  //piece color is the same	
-				}
-				
-				else {
-				/*	if(!isCheck(newPos)) {     //there is a piece at the new position, we need to move there and kill that piece
-						return true;
-					}
-					else {
-						//path is not empty
-						return false;
-					}*/
-					return true;
-				} 	
-			}
-			
-		}
-		
-		else {   //illegal move for King
-			return false;
-		}
-			
-	}
-	
-	/**
-	 * move implements the actual movement, here the King moves from its src to the position specified 
-	 * @param oldPos   is the src of the current King Piece
-	 * @param newPos   is the destination for the current King Piece
-	 * 
-	 */
-	
-	public void move(String oldPos, String newPos, char promopiece) {
-		Piece piece_oldPos = Chess.board.get(oldPos);
-		
-		//move piece to newPos
-		Chess.board.put(newPos, piece_oldPos);
-		
-		//make oldPos an empty box
-		if(Chess.isBlackBox(oldPos.charAt(0), oldPos.charAt(1)-'0')) {
-			Chess.board.put(oldPos, new EmptySquare("##"));
-		}
-		else {
-			Chess.board.put(oldPos, new EmptySquare("  "));
-		}
-	}
-	
-	public boolean isPathEmpty(String oldPos, String newPos) {
-		return false;
-	}
-
+    /**
+     * Checks if the path from o to n is empty.
+     * For the King, this method is trivial since the King only moves one square.
+     * 
+     * @param o the starting position in algebraic notation
+     * @param n the target position in algebraic notation
+     * @return false as path checking is not required for a one-square King move
+     */
+    //Kuber
+    public boolean isPathEmpty(String o, String n) {
+        // The King moves one square, so path checking is not needed.
+        return false;
+    }
+    
+    /**
+     * Moves the King from the source position o to the destination position n.
+     * This method updates the board by placing the King in the new position and 
+     * replacing the old position with an appropriate empty square.
+     * 
+     * @param o the current position of the King in algebraic notation
+     * @param n the destination position in algebraic notation
+     * @param p an unused promotion character (included for signature consistency)
+     */
+    //Aarav
+    public void move(String o, String n, char p) {
+        // Retrieve the King from its current square.
+        Piece a = Chess.board.get(o);
+        // Place the King at the destination square.
+        Chess.board.put(n, a);
+        // Determine the color of the originating square and clear it.
+        if (Chess.isBlackBox(o.charAt(0), o.charAt(1) - '0'))
+            Chess.board.put(o, new EmptySquare("##"));
+        else
+            Chess.board.put(o, new EmptySquare("  "));
+    }
+    
+    /**
+     * Checks if the move from o to n is valid for the King.
+     * A valid king move is one square in any direction (horizontal, vertical, or diagonal)
+     * and must not land on a square occupied by a piece of the same color.
+     * 
+     * @param o the current position of the King in algebraic notation (e.g., "e1")
+     * @param n the target position in algebraic notation (e.g., "e2")
+     * @return true if the move is valid; false otherwise
+     */
+    //Kuber
+    public boolean isMoveValid(String o, String n) {
+        if (Chess.board.containsKey(n) == false)
+            return false;
+        
+        // Get the piece representations at the source and destination.
+        String a = Chess.board.get(o).getvalue();
+        String b = Chess.board.get(n).getvalue();
+        
+        // Calculate horizontal and vertical distances.
+        int x = Math.abs(o.charAt(0) - n.charAt(0));
+        int y = Math.abs(o.charAt(1) - n.charAt(1));
+        
+        // Validate that the move is exactly one square in any direction.
+        if ((x == 0 && y == 1) || (x == 1 && y == 0) || (x == 1 && y == 1)) {
+            // If the destination is empty, the move is allowed.
+            if (Chess.board.get(n).getvalue().equals("  ") || 
+                Chess.board.get(n).getvalue().equals("##"))
+                return true;
+            else {
+                // For captures, ensure the piece at destination is of the opposite color.
+                if (a.charAt(0) == b.charAt(0))
+                    return false;
+                else
+                    return true;
+            }
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Constructs a new King object with the specified value.
+     * 
+     * @param v a String representing the King's value (including color and type)
+     */
+    //Aarav
+    public King(String v) {
+        super(v);
+        // King object initialized.
+    }
 }

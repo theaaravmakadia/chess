@@ -1,6 +1,3 @@
-/**
- * 
- */
 package pieces;
 
 import chess.Chess;
@@ -14,144 +11,116 @@ import java.util.List;
  * @author Kuber Kupuriya
  *
  */
-public class Bishop extends Piece{
+public class Bishop extends Piece {
 
-	public Bishop(String value) {
-		super(value);
-	}
+    /**
+     * Computes all board positions between two given diagonal squares.
+     * 
+     * @param s the starting position in algebraic notation (e.g., "a1")
+     * @param t the ending position in algebraic notation (e.g., "c3")
+     * @return a List of board positions (as strings) that lie between s and t along a diagonal
+     */
+    public static List<String> getIndicesInBetween(String s, String t) {
+		//Aarav
+        List<String> l = new ArrayList<>();
+        int a = (int) s.charAt(0);   // starting file (as ASCII code)
+        int b = (int) t.charAt(0);   // ending file (as ASCII code)
+        int c = s.charAt(1) - '0';   // starting rank as number
+        int d = t.charAt(1) - '0';   // ending rank as number
+        // Determine the direction of movement along the file and rank.
+        int e = Math.abs(b - a) / (b - a);
+        int f = Math.abs(d - c) / (d - c);
+        // Loop through the intermediate steps along the diagonal.
+        for (int g = 1; g < Math.abs(b - a); g++) {
+            char h = (char) (a + g * e);
+            int i = c + g * f;
+            l.add(Character.toString(h) + Integer.toString(i));
+        }
+        return l;
+    }
 
+    /**
+     * Checks if the diagonal path from s to t is unobstructed.
+     * 
+     * @param s the starting position in algebraic notation
+     * @param t the ending position in algebraic notation
+     * @return true if every intermediate square between s and t is empty; false otherwise
+     */
+    public boolean isPathEmpty(String s, String t) {
+		//Kuber
+        List<String> l = getIndicesInBetween(s, t);
+        // Loop over intermediate squares and verify they are unoccupied.
+        for (String x : l) {
+            if (!(Chess.board.get(x).getvalue().equals("##") || 
+                  Chess.board.get(x).getvalue().equals("  ")))
+                return false;
+        }
+        return true;
+    }
 
-	/** isMoveValid takes in the src, destination of the piece's move and returns true if it is a valid move for Bishop.
-	 * @param oldPos is the position the piece is trying to move from
-	 * @param newPos is the position the piece is trying to move to
-	 * 
-	 * @return true if the move is valid or false if not. 
-	 * 
-	 */
+    /**
+     * Determines whether a move from s to t is valid for a bishop.
+     * The move must be diagonal, not staying on the same square, and the path must be clear.
+     * 
+     * @param s the starting position in algebraic notation
+     * @param t the target position in algebraic notation
+     * @return true if the move is valid; false otherwise
+     */
+    public boolean isMoveValid(String s, String t) {
+		//Aarav
+        // Check if destination is within board boundaries.
+        if (!Chess.board.containsKey(t))
+            return false;
 
-	public boolean isMoveValid(String oldPos, String newPos) {
-		
-		/*to check if newPos is a box in the bounds of the board*/
-		if(Chess.board.containsKey(newPos) == false) {
-			return false;
-		}
-		
-		String piece_oldPos=Chess.board.get(oldPos).getvalue();
-		String piece_newPos=Chess.board.get(newPos).getvalue();
-		
-		//to check if valid move for a bishop:
-		if((Math.abs(oldPos.charAt(0) - newPos.charAt(0)) == Math.abs (oldPos.charAt(1) - newPos.charAt(1))) && !(oldPos.equals(newPos))) {
-			
-			//to check if the newPos is empty:
-			if(Chess.board.get(newPos).getvalue().equals("  ") || Chess.board.get(newPos).getvalue().equals("##")) {
-				if(isPathEmpty(oldPos, newPos)) {                
-					return true;
-				}
-				
-				else {
-					//need to prompt user to dry a different valid move
-					return false;
-				}
-			}                               //closing of the if check for newPos being empty. 
-			
-			/*Color case when newPos is not empty*/
-			else {
-				if(piece_oldPos.charAt(0)==piece_newPos.charAt(0)) {
-					//System.out.println("Illegal move, try again");  //piece color is the same	
-					return false;
-				}
-				
-				else {
-					if(isPathEmpty(oldPos,newPos)) {     //there is a piece at the new position, we need to move there and kill that piece.
-						return true; 	
-					}
-					else {
-						//path is not empty
-						return false;
-					}
-				}
-			}
-			
-		}
-		
-		else {   //illegal move for Bishop
-			return false;
-		}	
-		
-	}
-	
-	/**
-	 * move implements the actual movement, here the Bishop moves from its src to the position specified 
-	 * @param oldPos is the src of the current Bishop Piece
-	 * @param newPos is the destination for the current Bishop Piece
-	 * 
-	 */
-	
-	
-	public void move(String oldPos, String newPos, char promopiece) {
-		Piece piece_oldPos = Chess.board.get(oldPos);
-		
-		//move piece to newPos
-		Chess.board.put(newPos, piece_oldPos);
-		
-		//make oldPos an empty box
-		if(Chess.isBlackBox(oldPos.charAt(0), oldPos.charAt(1)-'0')) {
-			Chess.board.put(oldPos, new EmptySquare("##"));
-		}
-		else {
-			Chess.board.put(oldPos, new EmptySquare("  "));
-		}
-	}
+        String a = Chess.board.get(s).getvalue(); // value at source
+        String b = Chess.board.get(t).getvalue();   // value at destination
 
-	/**
-	 * isPathEmpty checks if the path is clear for the Bishop to move from its src to its destination.
-	 * @param oldPos   old position
-	 * @param newPos   new position
-	 * 
-	 * @return true if the path is clear otherwise false
-	 * 
-	 */
-	
-	public boolean isPathEmpty(String oldPos, String newPos) {
-		List<String> boxes=getIndicesInBetween(oldPos, newPos);
-		
-		for (String index:boxes) {
-			if(!(Chess.board.get(index).getvalue().equals("##") || Chess.board.get(index).getvalue().equals("  "))) //box is empty
-				return false;
-		
-		}
-		return true;
-	}
-	
-	/**
-	 * getIndicesinBetween is getting the list of indices in between the old position and new position, it is a helper for isPathEmpty.
-	 * @param oldPos   old position
-	 * @param newPos   new position
-	 * 
-	 * @return List  containing the indices of the boxes between the src and the dst. 
-	 * 
-	 */
-	
-	public static List<String> getIndicesInBetween(String oldPos, String newPos) {
-		//@requires oldPos and newPos to form a diagonal path.
-		//e.g. (A1, C3) is valid. (E4, C6) is valid. (G6, D3) is valid.
-		
-		List<String> indicesList = new ArrayList<String>();
-		
-		int x1 = (int)(oldPos.charAt(0)); int x2 = (int)(newPos.charAt(0));
-		int y1 = oldPos.charAt(1) - '0'; int y2 = newPos.charAt(1) - '0';
-		
-		int xGradient = Math.abs(x2 - x1)/(x2 - x1);
-		int yGradient = Math.abs(y2 - y1)/(y2 - y1);
-		
-		for(int i = 1; i < Math.abs(x2 - x1); i++) {
-			char nextX = (char)(x1 + i*xGradient);
-			int nextY = y1 + i*yGradient;
-			
-			indicesList.add(Character.toString(nextX) + Integer.toString(nextY) + "");
-		}
-		
-		return indicesList;
-	}
+        // Verify the move is along a diagonal and the bishop isn't staying in place.
+        if ((Math.abs(s.charAt(0) - t.charAt(0)) == Math.abs(s.charAt(1) - t.charAt(1))) && !s.equals(t)) {
+            // If destination square is empty, check that the path is not obstructed.
+            if (Chess.board.get(t).getvalue().equals("  ") || Chess.board.get(t).getvalue().equals("##")) {
+                return isPathEmpty(s, t);
+            } else {
+                // If the destination square is occupied, check for same color.
+                if (a.charAt(0) == b.charAt(0))
+                    return false;
+                else {
+                    // Allow capture only if the path is clear.
+                    return isPathEmpty(s, t);
+                }
+            }
+        } else {
+            return false;
+			//why?
+        }
+    }
 
+    /**
+     * Moves the bishop from position s to position t.
+     * The method updates the board by placing the bishop at the new position and clearing the source.
+     * 
+     * @param s the current position of the bishop in algebraic notation
+     * @param t the destination position in algebraic notation
+     * @param p a promotion character (unused for bishop, but maintained for method signature consistency)
+     */
+    public void move(String s, String t, char p) {
+		//Aarav
+        Piece a = Chess.board.get(s);
+        Chess.board.put(t, a);
+        // Replace the source square with an empty square based on its color.
+        if (Chess.isBlackBox(s.charAt(0), s.charAt(1) - '0'))
+            Chess.board.put(s, new EmptySquare("##"));
+        else
+            Chess.board.put(s, new EmptySquare("  "));
+    }
+
+    /**
+     * Constructs a new Bishop object with the specified value.
+     * 
+     * @param v a string representing the bishop's value (typically encoding its color and type)
+     */
+    public Bishop(String v) {
+		//Kuber
+        super(v);
+    }
 }
