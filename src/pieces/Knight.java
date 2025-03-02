@@ -1,135 +1,108 @@
-/**
- * 
- */
 package pieces;
 
 import chess.Chess;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Knight class is used to implement the Knight piece in the game of chess.
+ * It provides move validation and movement methods specific to the Knight.
+ * 
  * @author Aarav Makadia
  * @author Kuber Kupuriya
- *
  */
 public class Knight extends Piece {
 
-	public Knight(String value) {
-		super(value);
-	}
+    //Kuber
+    /**
+     * Checks if the path from o to n is empty.
+     * For the Knight, this method is trivial since path checking is not required.
+     *
+     * @param o the starting position in algebraic notation
+     * @param n the destination position in algebraic notation
+     * @return false always, as the Knight's move does not require path checking
+     */
+    public boolean isPathEmpty(String o, String n) {
+        return false;
+    }
 
-	/** isMoveValid takes in the src, destination of the piece's move and returns true if it is a valid move for Knight.
-	 * @param oldPos   is the position the piece is trying to move from
-	 * @param newPos   is the position the piece is trying to move to
-	 * 
-	 * @return true if the move is valid and false otherwise.
-	 * 
-	 */
-	
-	public boolean isMoveValid(String oldPos, String newPos) {
-		
-		/*to check if newPos is a box in the bounds of the board*/
-		if(Chess.board.containsKey(newPos) == false) {
-			return false;
-		}
-		
-		String piece_oldPos = Chess.board.get(oldPos).getvalue();
-		String piece_newPos = Chess.board.get(newPos).getvalue();
-		
-		
-		/*Given a knight at a position, valid moves contains fileranks for all possible moves for that knight*/
-		ArrayList<String> validmoves = new ArrayList<String>();
-		
-		String topleftbottom = Character.toString((char)(oldPos.charAt(0) - 2)) + (char)(((oldPos.charAt(1)-'0')+1)+'0');
-		String toplefttop = Character.toString((char)(oldPos.charAt(0) - 1)) + (char)(((oldPos.charAt(1)-'0')+2)+'0');
-		String toprightbottom = Character.toString((char)(oldPos.charAt(0) + 2)) + (char)(((oldPos.charAt(1)-'0')+1)+'0');
-		String toprighttop = Character.toString((char)(oldPos.charAt(0) + 1)) + (char)(((oldPos.charAt(1)-'0')+2)+'0');
-		
-		String bottomleftbottom = Character.toString((char)(oldPos.charAt(0) - 1)) + (char)(((oldPos.charAt(1)-'0')-2)+'0');
-		String bottomlefttop = Character.toString((char)(oldPos.charAt(0) - 2)) + (char)(((oldPos.charAt(1)-'0')-1)+'0');
-		String bottomrightbottom = Character.toString((char)(oldPos.charAt(0) + 1)) + (char)(((oldPos.charAt(1)-'0')-2)+'0');
-		String bottomrighttop = Character.toString((char)(oldPos.charAt(0) + 2)) + (char)(((oldPos.charAt(1)-'0')-1)+'0');
-		
-		if(Chess.board.containsKey(topleftbottom)) {
-			validmoves.add(topleftbottom);
-		}
-		if(Chess.board.containsKey(toplefttop)) {
-			validmoves.add(toplefttop);
-		}
-		if(Chess.board.containsKey(toprightbottom)) {
-			validmoves.add(toprightbottom);
-		}
-		if(Chess.board.containsKey(toprighttop)) {
-			validmoves.add(toprighttop);
-		}
-		if(Chess.board.containsKey(bottomleftbottom)) {
-			validmoves.add(bottomleftbottom);
-		}
-		if(Chess.board.containsKey(bottomlefttop)) {
-			validmoves.add(bottomlefttop);
-		}
-		if(Chess.board.containsKey(bottomrightbottom)) {
-			validmoves.add(bottomrightbottom);
-		}
-		if(Chess.board.containsKey(bottomrighttop)) {
-			validmoves.add(bottomrighttop);
-		}
-		
-		/*At this point, validmoves has all the possible points the knight can move based on oldPos*/
-		
-		if(validmoves.contains(newPos)) { 
-		/*is a valid Knight move*/
-			
-			/*to check if newPos is empty*/
-			if(Chess.board.get(newPos) instanceof EmptySquare) {
-				return true;
-			}
-			else {
-				
-				if(piece_oldPos.charAt(0) == piece_newPos.charAt(0)) {
-					//piece color at both positions is the same	
-					return false;
-				}
-				else {
-					//there is a piece at the new position, we need to move there and kill that piece.
-					return true;
-				}
-			}
-		}
-		else {
-			/*validmoves does not contain newPos, not a valid Knight move*/
-			return false;
-		}
-		
-	}
-	
-	/**
-	 * move implements the actual movement, here the Knight moves from its src to the position specified 
-	 * @param oldPos   is the src of the current Knight Piece
-	 * @param newPos   is the destination for the current Knight Piece
-	 * 
-	 */
-	
-	public void move(String oldPos, String newPos, char promopiece) {
-		Piece piece_oldPos = Chess.board.get(oldPos);
-		
-		//move piece to newPos
-		Chess.board.put(newPos, piece_oldPos);
-		
-		//make oldPos an empty box
-		if(Chess.isBlackBox(oldPos.charAt(0), oldPos.charAt(1)-'0')) {
-			Chess.board.put(oldPos, new EmptySquare("##"));
-		}
-		else {
-			Chess.board.put(oldPos, new EmptySquare("  "));
-		}
-	}
-	
+    //Kuberr
+    /**
+     * Moves the Knight from position o to position n.
+     * This method updates the board by placing the Knight at n and replacing o with an empty square.
+     *
+     * @param o the source position in algebraic notation
+     * @param n the destination position in algebraic notation
+     * @param p an unused promotion character (for signature consistency)
+     */
+    public void move(String o, String n, char p) {
+        Piece a = Chess.board.get(o);
+        Chess.board.put(n, a);
+        if (Chess.isBlackBox(o.charAt(0), o.charAt(1) - '0'))
+            Chess.board.put(o, new EmptySquare("##"));
+        else
+            Chess.board.put(o, new EmptySquare("  "));
+    }
 
-	
-	public boolean isPathEmpty(String oldPos, String newPos) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    //Kuber
+    /**
+     * Determines if moving from o to n is a valid Knight move.
+     * It computes all possible Knight moves from o and returns true if n is one of them.
+     * If the destination is occupied by a piece of the same color, the move is invalid.
+     *
+     * @param o the current position of the Knight in algebraic notation
+     * @param n the target position in algebraic notation
+     * @return true if the move is valid; false otherwise
+     */
+    public boolean isMoveValid(String o, String n) {
+        if (!Chess.board.containsKey(n))
+            return false;
+        
+        String a = Chess.board.get(o).getvalue();
+        String b = Chess.board.get(n).getvalue();
+        
+        ArrayList<String> l = new ArrayList<>();
+        
+        // Calculate all possible Knight moves using one-letter variable names.
+        String x = Character.toString((char)(o.charAt(0) - 2)) + (char)(((o.charAt(1) - '0') + 1) + '0');
+        String y = Character.toString((char)(o.charAt(0) - 1)) + (char)(((o.charAt(1) - '0') + 2) + '0');
+        String z = Character.toString((char)(o.charAt(0) + 2)) + (char)(((o.charAt(1) - '0') + 1) + '0');
+        String w = Character.toString((char)(o.charAt(0) + 1)) + (char)(((o.charAt(1) - '0') + 2) + '0');
+        String u = Character.toString((char)(o.charAt(0) - 1)) + (char)(((o.charAt(1) - '0') - 2) + '0');
+        String v = Character.toString((char)(o.charAt(0) - 2)) + (char)(((o.charAt(1) - '0') - 1) + '0');
+        String s = Character.toString((char)(o.charAt(0) + 1)) + (char)(((o.charAt(1) - '0') - 2) + '0');
+        String t = Character.toString((char)(o.charAt(0) + 2)) + (char)(((o.charAt(1) - '0') - 1) + '0');
+        
+        if (Chess.board.containsKey(x)) l.add(x);
+        if (Chess.board.containsKey(y)) l.add(y);
+        if (Chess.board.containsKey(z)) l.add(z);
+        if (Chess.board.containsKey(w)) l.add(w);
+        if (Chess.board.containsKey(u)) l.add(u);
+        if (Chess.board.containsKey(v)) l.add(v);
+        if (Chess.board.containsKey(s)) l.add(s);
+        if (Chess.board.containsKey(t)) l.add(t);
+        
+        if (l.contains(n)) {
+            if (Chess.board.get(n) instanceof EmptySquare)
+                return true;
+            else {
+                if (a.charAt(0) == b.charAt(0))
+                    return false;
+                else
+                    return true;
+            }
+        } else {
+            return false;
+        }
+    }
 
+    //Aarav
+    /**
+     * Constructs a new Knight object with the specified value.
+     *
+     * @param v a String representing the Knight's value (including color and type)
+     */
+    public Knight(String v) {
+        super(v);
+    }
 }
