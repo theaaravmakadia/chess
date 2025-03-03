@@ -12,6 +12,7 @@ public class Rook extends Piece {
 	private boolean hasMoved = false;  // New field to track movement for castling
 
 	public Rook(String value) {
+        // constructor
 		super(value);
 	}
 
@@ -22,7 +23,9 @@ public class Rook extends Piece {
 	 * @return true if the move is valid or false if not. 
 	 */
 	public boolean isMoveValid(String oldPos, String newPos) {
+        //aarav
 		if (!Chess.board.containsKey(newPos)) {
+            // why?
 			return false;
 		}
 		
@@ -58,6 +61,7 @@ public class Rook extends Piece {
 	 * @param newPos is the destination for the current Rook Piece
 	 */
 	public void move(String oldPos, String newPos, char promopiece) {
+        // kuber
 		Piece piece_oldPos = Chess.board.get(oldPos);
 
 		// Move piece to newPos
@@ -82,6 +86,7 @@ public class Rook extends Piece {
 	 * @return true if the path is clear otherwise false
 	 */
 	public boolean isPathEmpty(String oldPos, String newPos) {
+        //kuber
 		if (oldPos.charAt(0) == newPos.charAt(0)) {
 			int i;
 			int numoldPos = oldPos.charAt(1) - '0';
@@ -147,6 +152,7 @@ public class Rook extends Piece {
 	 * @param hasMoved true to mark rook as having moved.
 	 */
 	public void setHasMoved(boolean hasMoved) {
+        //aarav
 		this.hasMoved = hasMoved;
 	}
 }
