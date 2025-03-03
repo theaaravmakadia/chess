@@ -1,7 +1,6 @@
 package chess;
 
 import java.util.*;
-import pieces.*;
 
 public class Chess {
 

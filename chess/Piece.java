@@ -1,4 +1,4 @@
-package pieces;
+package chess;
 
 /**
  * The Piece class is used to implement the Piece in the game of chess.

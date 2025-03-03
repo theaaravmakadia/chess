@@ -1,6 +1,5 @@
-package pieces;
+package chess;
 
-import chess.Chess;
 import java.util.ArrayList;
 import java.util.List;
 

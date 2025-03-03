@@ -1,4 +1,4 @@
-package pieces;
+package chess;
 
 /**
  * The EmptySquare class is used to implement the EmptySquare piece in the game of chess.

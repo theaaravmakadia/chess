@@ -1,8 +1,7 @@
-package pieces;
+package chess;
 
 import java.util.ArrayList;
 import java.util.List;
-import chess.Chess;
 
 /**
  * The Queen class is used to implement the Queen piece in the game of chess.

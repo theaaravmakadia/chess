@@ -1,6 +1,4 @@
-package pieces;
-
-import chess.Chess;
+package chess;
 
 /**
  * The Rook class is used to implement the Rook piece in the game of chess.

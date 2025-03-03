@@ -1,6 +1,4 @@
-package pieces;
-
-import chess.Chess;
+package chess;
 
 /**
  * The Pawn class is used to implement the Pawn piece in the game of chess.
