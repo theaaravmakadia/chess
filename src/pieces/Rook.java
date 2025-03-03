@@ -1,140 +1,152 @@
 package pieces;
 
 import chess.Chess;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The Rook class is used to implement the Rook piece in the game of chess.
- * It provides move validation, movement execution, and path checking methods specific to the Rook.
- * 
  * @author Aarav Makadia
  * @author Kuber Kupuriya
  */
 public class Rook extends Piece {
 
-    /**
-     * Constructs a new Rook object with the specified value.
-     * 
-     * @param v a String representing the Rook's value (including color and type)
-     */
-    public Rook(String v) {
-        super(v);
-    }
+	private boolean hasMoved = false;  // New field to track movement for castling
 
-    /**
-     * Determines if the move from o to n is valid for the Rook.
-     * The move is valid if it is along a straight line (vertical or horizontal),
-     * the source and destination are not the same, and the path is clear.
-     * 
-     * @param o the starting position in algebraic notation
-     * @param n the destination position in algebraic notation
-     * @return true if the move is valid; false otherwise
-     */
-    public boolean isMoveValid(String o, String n) {
-        if (Chess.board.containsKey(n) == false)
-            return false;
-        
-        String p = Chess.board.get(o).getvalue();
-        String q = Chess.board.get(n).getvalue();
-        
-        if ((o.charAt(0) == n.charAt(0) || o.charAt(1) == n.charAt(1)) && !o.equals(n)) {
-            if (Chess.board.get(n).getvalue().equals("  ") || 
-                Chess.board.get(n).getvalue().equals("##")) {
-                if (isPathEmpty(o, n))
-                    return true;
-                else
-                    return false;
-            } else {
-                if (p.charAt(0) == q.charAt(0))
-                    return false;
-                else {
-                    if (isPathEmpty(o, n))
-                        return true;
-                    else
-                        return false;
-                }
-            }
-        } else {
-            return false;
-        }
-    }
+	public Rook(String value) {
+		super(value);
+	}
 
-    /**
-     * Moves the Rook from the source position o to the destination position n.
-     * Updates the board by placing the Rook at the destination and replacing the source with an empty square.
-     * 
-     * @param o the current position of the Rook in algebraic notation
-     * @param n the destination position in algebraic notation
-     * @param x an unused promotion character (for signature consistency)
-     */
-    public void move(String o, String n, char x) {
-        Piece p = Chess.board.get(o);
-        Chess.board.put(n, p);
-        if (Chess.isBlackBox(o.charAt(0), o.charAt(1) - '0'))
-            Chess.board.put(o, new EmptySquare("##"));
-        else
-            Chess.board.put(o, new EmptySquare("  "));
-    }
+	/** isMoveValid takes in the src,destination of the piece's move and returns true if it is a valid move for Rook.
+	 * @param oldPos is the position the piece is trying to move from
+	 * @param newPos is the position the piece is trying to move to
+	 * 
+	 * @return true if the move is valid or false if not. 
+	 */
+	public boolean isMoveValid(String oldPos, String newPos) {
+		if (!Chess.board.containsKey(newPos)) {
+			return false;
+		}
+		
+		String piece_oldPos = Chess.board.get(oldPos).getvalue();
+		String piece_newPos = Chess.board.get(newPos).getvalue();
+		
+		if ((oldPos.charAt(0) == newPos.charAt(0) || oldPos.charAt(1) == newPos.charAt(1)) && !(oldPos.equals(newPos))) {
+			if (Chess.board.get(newPos).getvalue().equals("  ") || Chess.board.get(newPos).getvalue().equals("##")) {
+				if (isPathEmpty(oldPos, newPos)) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				if (piece_oldPos.charAt(0) == piece_newPos.charAt(0)) {
+					return false;
+				} else {
+					if (isPathEmpty(oldPos, newPos)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+		} else {
+			return false;
+		}	
+	}
+	
+	/**
+	 * move implements the actual movement, here the Rook moves from its src to the position specified 
+	 * @param oldPos is the src of the current Rook Piece
+	 * @param newPos is the destination for the current Rook Piece
+	 */
+	public void move(String oldPos, String newPos, char promopiece) {
+		Piece piece_oldPos = Chess.board.get(oldPos);
 
-    /**
-     * Checks if the path from the source position o to the destination position n is clear for the Rook's move.
-     * For vertical moves, it checks the squares between the two ranks.
-     * For horizontal moves, it checks the squares between the two files.
-     * 
-     * @param o the starting position in algebraic notation
-     * @param n the destination position in algebraic notation
-     * @return true if the path is clear; false otherwise
-     */
-    public boolean isPathEmpty(String o, String n) {
-        if (o.charAt(0) == n.charAt(0)) {
-            int i;
-            int a = o.charAt(1) - '0';
-            int b = n.charAt(1) - '0';
-            
-            if (a < b) {
-                for (i = a + 1; i < b; i++) {
-                    if (!isBoxEmpty(o.charAt(0), i))
-                        return false;
-                }
-            } else {
-                for (i = b + 1; i < a; i++) {
-                    if (!isBoxEmpty(o.charAt(0), i))
-                        return false;
-                }
-            }
-        } else if (o.charAt(1) == n.charAt(1)) {
-            char c;
-            char d = o.charAt(0);
-            char e = n.charAt(0);
-            
-            if (d < e) {
-                for (c = (char)(d + 1); c < e; c++) {
-                    if (!isBoxEmpty(c, o.charAt(1) - '0'))
-                        return false;
-                }
-            } else {
-                for (c = (char)(e + 1); c < d; c++) {
-                    if (!isBoxEmpty(c, o.charAt(1) - '0'))
-                        return false;
-                }
-            }
-        }
-        return true;
-    }
+		// Move piece to newPos
+		Chess.board.put(newPos, piece_oldPos);
 
-    /**
-     * Helper function that checks if a specific board square is empty.
-     * 
-     * @param a the column character
-     * @param b the row number
-     * @return true if the square is empty; false otherwise
-     */
-    private static boolean isBoxEmpty(char a, int b) {
-        String s = a + "" + b;
-        if (Chess.board.get(s).getvalue().equals("##") || 
-            Chess.board.get(s).getvalue().equals("  "))
-            return true;
-        return false;
-    }
+		// Make oldPos an empty box
+		if (Chess.isBlackBox(oldPos.charAt(0), oldPos.charAt(1) - '0')) {
+			Chess.board.put(oldPos, new EmptySquare("##"));
+		} else {
+			Chess.board.put(oldPos, new EmptySquare("  "));
+		}
+
+		// Set hasMoved to true after the first move
+		hasMoved = true;
+	}
+
+	/**
+	 * isPathEmpty checks if the path is clear for the Rook to move from its src to its destination.
+	 * @param oldPos old position
+	 * @param newPos new position
+	 * 
+	 * @return true if the path is clear otherwise false
+	 */
+	public boolean isPathEmpty(String oldPos, String newPos) {
+		if (oldPos.charAt(0) == newPos.charAt(0)) {
+			int i;
+			int numoldPos = oldPos.charAt(1) - '0';
+			int numnewPos = newPos.charAt(1) - '0';
+
+			if (numoldPos < numnewPos) {
+				for (i = numoldPos + 1; i < numnewPos; i++) {
+					if (!isBoxEmpty(oldPos.charAt(0), i)) {
+						return false;
+					}
+				}
+			} else {
+				for (i = numnewPos + 1; i < numoldPos; i++) {
+					if (!isBoxEmpty(oldPos.charAt(0), i)) {
+						return false;
+					}
+				}
+			}
+		} else if (oldPos.charAt(1) == newPos.charAt(1)) {
+			char letter;
+			char letteroldPos = oldPos.charAt(0);
+			char letternewPos = newPos.charAt(0);
+
+			if (letteroldPos < letternewPos) {
+				for (letter = (char)(letteroldPos + 1); letter < letternewPos; letter++) {
+					if (!isBoxEmpty(letter, oldPos.charAt(1) - '0')) {
+						return false;
+					}
+				}
+			} else {
+				for (letter = (char)(letternewPos + 1); letter < letteroldPos; letter++) {
+					if (!isBoxEmpty(letter, oldPos.charAt(1) - '0')) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * isBoxEmpty is a helper function for isPathEmpty to check if the boxes in the path of the move are empty.
+	 * @param alpha  column
+	 * @param num    row
+	 * 
+	 * @return  true if the box/square is empty, else false. 
+	 */
+	private static boolean isBoxEmpty(char alpha, int num) {
+		String filerank = alpha + "" + num;
+		return Chess.board.get(filerank).getvalue().equals("##") || Chess.board.get(filerank).getvalue().equals("  ");
+	}
+
+	/**
+	 * Getter for castling support.
+	 * @return true if rook has already moved, false if it hasn't.
+	 */
+	public boolean hasMoved() {
+		return hasMoved;
+	}
+
+	/**
+	 * Setter for hasMoved (useful if board resets or castling logic needs to manually reset).
+	 * @param hasMoved true to mark rook as having moved.
+	 */
+	public void setHasMoved(boolean hasMoved) {
+		this.hasMoved = hasMoved;
+	}
 }
